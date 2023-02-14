@@ -32,7 +32,7 @@ The Utils folder contains methods and classes that are commonly used in our proj
 
 ## Workflow Diagram
 
-![img](assets/armorial-psel-workflow-diagram.png)
+![img](assets/armorial-psel-workflow-diagram-bg.png)
 
 ## Controlling the Robots
 
