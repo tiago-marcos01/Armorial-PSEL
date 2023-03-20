@@ -34,6 +34,18 @@
 #define YELLOW false
 #define BLUE true
 
+#define corrigir 0
+#define aproximar 1
+#define alinhar 2
+#define chutar 3
+#define retornar 4
+#define recomecar 5
+
+#define espera 0
+#define defende 1
+#define acompanha 2
+
+
 /*!
  * \brief The Coach class provides an interface to control the available Players in the field.
  */
@@ -57,6 +69,8 @@ protected:
      * object if it exists or it should contains std::nullopt otherwise.
      */
     std::optional<Player*> getPlayer(const bool& isTeamBlue, const quint8& playerId);
+    void chute();
+    void preditor();
 
     /*!
      * \return Return WorldMap pointer.
