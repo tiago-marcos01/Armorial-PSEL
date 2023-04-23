@@ -37,6 +37,8 @@ SOURCES += \
         include/proto/packet.pb.cc \
         include/proto/replacement.pb.cc \
         main.cpp \
+        src/entities/Behaviors/behavior.cpp \
+        src/entities/Roles/roles.cpp \
         src/entities/actuator/actuator.cpp \
         src/entities/coach/coach.cpp \
         src/entities/player/player.cpp \
@@ -56,6 +58,8 @@ HEADERS += \
     include/proto/common.pb.h \
     include/proto/packet.pb.h \
     include/proto/replacement.pb.h \
+    src/entities/Behaviors/behavior.h \
+    src/entities/Roles/roles.h \
     src/entities/actuator/actuator.h \
     src/entities/coach/coach.h \
     src/entities/player/player.h \

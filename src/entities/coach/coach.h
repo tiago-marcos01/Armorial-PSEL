@@ -34,6 +34,7 @@
 #define YELLOW false
 #define BLUE true
 
+//estados do chaser
 #define corrigir 0
 #define aproximar 1
 #define alinhar 2
@@ -41,10 +42,17 @@
 #define retornar 4
 #define recomecar 5
 
+//estados do preditor
 #define espera 0
 #define defende 1
 #define acompanha 2
 
+//estados do meia
+
+#define aguarda 0
+#define avanca 1
+#define defesa 2
+#define devolve 3
 
 /*!
  * \brief The Coach class provides an interface to control the available Players in the field.
@@ -59,7 +67,9 @@ public:
      * \param worldMap The given worldmap pointer.
      */
     Coach(const QMap<bool, QList<Player*>>& players, WorldMap* worldMap);
-
+    void chute();
+    void preditor();
+    void meia();
 protected:
     /*!
      * \brief Get a Player instance pointer with given parameters.
@@ -69,8 +79,7 @@ protected:
      * object if it exists or it should contains std::nullopt otherwise.
      */
     std::optional<Player*> getPlayer(const bool& isTeamBlue, const quint8& playerId);
-    void chute();
-    void preditor();
+
 
     /*!
      * \return Return WorldMap pointer.

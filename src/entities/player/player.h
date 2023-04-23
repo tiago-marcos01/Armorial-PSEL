@@ -91,10 +91,6 @@ public:
      */
     quint8 getPlayerId() const;
 
-protected:
-    // Mark Coach as a friend class so it can call this methods from Player
-    friend class Coach;
-
     /*!
      * \brief Make this Player go to a given target position.
      * \param targetPosition The given target position.
@@ -112,6 +108,12 @@ protected:
      * \param orientation The given orientation.
      */
     void rotateTo(const float& orientation);
+
+protected:
+    // Mark Coach as a friend class so it can call this methods from Player
+    friend class Coach;
+
+
 
 private:
     // Player internal variables

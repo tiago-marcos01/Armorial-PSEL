@@ -22,7 +22,7 @@
 #include "coach.h"
 #include "math.h"
 #include <QDebug>
-
+#include "src/entities/Roles/roles.h"
 #define PI 3.14159
 
 Coach::Coach(const QMap<bool, QList<Player*>>& players, WorldMap* worldMap)
@@ -57,175 +57,22 @@ WorldMap* Coach::getWorldMap() {
 
 
 
-int posicao = corrigir;
-
-void Coach::chute(void){
-
-    Player* jogador = getPlayer(YELLOW,0).value(); // O jogador utilizado para os testes é o Yellow 0.
-    WorldMap* world = getWorldMap();
-
-    QVector2D ourGoalCenter = world->ourGoalCenter();
-    float getOrientation = jogador->getOrientation();
-    QVector2D getPosition = jogador->getPosition();
-    QVector2D ballPosition = world->ballPosition();
-    QVector2D theirGoalCenter = world->theirGoalCenter();
-
-    QVector2D alinhamento = (-theirGoalCenter + ballPosition)*1.4;
-    QVector2D ajuste;
-
-    float length = world->length();             //O vetor alinhamento descreve um vetor que contenha as coordenadas da bolla e do dentro do goll adversário.
-    ajuste.setX(alinhamento.x()-(length/2));
-    ajuste.setY(alinhamento.y());
-
-    float distanciaX = abs(abs(getPosition.x())-abs(ballPosition.x())); //Distância entre a bola e o robô na componente X.
-    float distanciaY = abs(abs(getPosition.y())-abs(ballPosition.y())); //Distância entre a bola e o robô na componente Y.
-    float distancia = sqrt(pow(distanciaX,2)+pow(distanciaY,2));
-
-    QVector2D correcao;
-    correcao.setX(ballPosition.x());
-    correcao.setY(ballPosition.y()+0.17);
-    qDebug()<<posicao;
-    switch(posicao){
-    case corrigir:{
-        if(getPosition.x()<ballPosition.x() && distancia<=0.3){
-            jogador->goTo(correcao);
-            posicao=aproximar;
-        }else{
-            posicao=aproximar;;
-        }
-        break;
-    }
-    case aproximar:{ //Caso o robô não esteja alinhado com a bola e o gol adversário, ele se deslocará para o vetor alinhamento.
-            if(getPosition!=alinhamento){
-                jogador->goTo(ajuste);
-                posicao=alinhar;
-            }else{
-                posicao=alinhar;
-            }
-            break;
-            }
-        case alinhar:{ //Ao assumir a posição correta, o robô executará uma rotação para que fique de frente para a bola.
-            if(ballPosition.x()<=0){
-                if(getOrientation!=((3*PI/2) -(alinhamento.y()/alinhamento.x())) && getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
-                    jogador->rotateTo((3*PI/2)-(alinhamento.y()/alinhamento.x()));
-                    posicao=chutar;
-                }else{
-                    posicao=aproximar;
-                }
-            }else{
-                if(getOrientation!=(+(alinhamento.y()/alinhamento.x())) && getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
-                    jogador->rotateTo(+(alinhamento.y()/alinhamento.x()));
-                    posicao=chutar;
-                }else{
-                    posicao=aproximar;
-                }
-            }
-            break;
-            }
-        case chutar:{ //Quando estiver na posição correta e virado para a bola, o robô chutará a bola.
-            if(ballPosition.x()>theirGoalCenter.x() && getPosition.x()>ballPosition.x()){
-                if(distancia>=0.1){
-                    jogador->goTo(ballPosition);
-                }
-            }else{
-                posicao=retornar;
-            }
-
-            break;
-            }
-        case retornar:{ // Caso a bola entre no gol, ou se o robô errar o gol, ele se deslocará para o gol aliado.
-            if(ballPosition.x()<=theirGoalCenter.x()){
-                    jogador->goTo(ourGoalCenter);
-                    posicao=recomecar;
-            }else{
-                posicao=recomecar;
-            }
-            break;
-            }
-        case recomecar:{ //Uma vez no gol aliado, o robô reiniciará o processo.
-            if(getPosition.x()>=ourGoalCenter.x()){
-                posicao=aproximar;
-            }else{
-                jogador->goTo(ourGoalCenter);
-            }
-            break;
-            }
-            }
-            }
-
-
-int proceder = espera;
-
-void Coach::preditor(){
-    Player* jogador = getPlayer(YELLOW,1).value();
-    WorldMap* world = getWorldMap();
-
-    QVector2D ballPosition = world->ballPosition();
-    QVector2D ourGoalCenter = world->ourGoalCenter();
-    QVector2D getPosition = jogador->getPosition();
-    QVector2D chute;
-
-
-    float distanciaX = abs(abs(getPosition.x())-abs(ballPosition.x()));
-    float distanciaY = abs(abs(getPosition.y())-abs(ballPosition.y()));
-    float distancia = sqrt(pow(distanciaX,2)+pow(distanciaY,2));
-
-    chute.setX(ballPosition.x()-0.2);
-    chute.setY(ballPosition.y());
-
-    switch(proceder){
-    case espera:{
-        if(ballPosition.x()>=0){
-            jogador->goTo(ballPosition);
-            proceder = defende;
-        }else{
-            proceder=acompanha;
-        }
-        break;
-    }
-    case defende:{
-        if(ballPosition.x()<0 && getPosition.x()<=ourGoalCenter.x()){
-            jogador->goTo(ourGoalCenter);
-            proceder = acompanha;
-        }else{
-            proceder = espera;
-        }
-        break;
-    }
-    case acompanha:{
-        if(ballPosition.x()<0 && getPosition.x()>= ourGoalCenter.x()){
-            jogador->rotateTo(ballPosition);
-            proceder = espera;
-        }else{
-            proceder = defende;
-        }
-        break;
-    }
-    }
 
 
 
 
-}
+
 void Coach::runCoach() {
 
-    chute();
-    preditor();
 
-    Player* jogador = getPlayer(BLUE,1).value();
-    WorldMap* world = getWorldMap();
+    QVector2D ballPosition = getWorldMap()->ballPosition();
 
-    QVector2D ballPosition = world->ballPosition();
-    jogador->goTo(ballPosition);
+    getPlayer(BLUE,0).value()->goTo(ballPosition);
+    getPlayer(BLUE,1).value()->goTo(ballPosition);
+    getPlayer(BLUE,2).value()->goTo(ballPosition);
 
-
-
-    // Here you can control the robots freely.
-    // Remember that the getPlayer(color, id) function can return a std::nullopt object, so
-    // be careful when you use it (remember to only use ids from 0-2 and the BLUE and YELLOW
-    // defines).
-
-
-
+    goleiro(getPlayer(YELLOW,0).value(), getWorldMap());
+    atacante(getPlayer(YELLOW,1).value(), getWorldMap());    
+    meioCampo(getPlayer(YELLOW,2).value(), getWorldMap());
 
 }
