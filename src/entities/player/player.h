@@ -33,8 +33,8 @@
 // Constants for Player detection
 static constexpr QVector2D OUT_OF_FIELD = QVector2D(std::numeric_limits<float>::max(),
                                                     std::numeric_limits<float>::max());
-static constexpr int PACKETS_TILL_MISSING = 60;
-static constexpr float KP = 25.0f;
+static constexpr int PACKETS_TILL_MISSING = 60; //original: kp=20.0; ki=0.0; kd=2.5;base_speed=30.0
+static constexpr float KP = 20.0f;
 static constexpr float KI = 0.0f;
 static constexpr float KD = 2.5f;
 static constexpr float BASE_SPEED = 30.0f;

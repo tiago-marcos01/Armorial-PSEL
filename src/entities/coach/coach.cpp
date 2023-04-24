@@ -1,4 +1,4 @@
-﻿/***
+/***
  * Maracatronics Robotics
  * Federal University of Pernambuco (UFPE) at Recife
  * http://www.maracatronics.com/
@@ -64,12 +64,7 @@ WorldMap* Coach::getWorldMap() {
 
 void Coach::runCoach() {
 
-
-    QVector2D ballPosition = getWorldMap()->ballPosition();
-
-    getPlayer(BLUE,0).value()->goTo(ballPosition);
-    getPlayer(BLUE,1).value()->goTo(ballPosition);
-    getPlayer(BLUE,2).value()->goTo(ballPosition);
+    getWorldMap()->playingLeftSide();
 
     goleiro(getPlayer(YELLOW,0).value(), getWorldMap());
     atacante(getPlayer(YELLOW,1).value(), getWorldMap());    
