@@ -37,13 +37,14 @@ void chute(Player* jogador, WorldMap* world){
     side ? correcao.setY(ballPosition.y()-0.17) :  correcao.setY(ballPosition.y()+0.17);
     //qDebug() << correcao;
     //qDebug() << ajuste;
+    qDebug() << estadoChute;
     switch(estadoChute){
     case corrigir:{
         if(side ? getPosition.x()>ballPosition.x() && distancia<=0.3 : getPosition.x()<ballPosition.x() && distancia<=0.3){
             jogador->goTo(correcao);
             estadoChute=aproximar;
         }else{
-            estadoChute=aproximar;;
+            estadoChute=aproximar;
         }
         break;
     }
@@ -58,14 +59,14 @@ void chute(Player* jogador, WorldMap* world){
             }
         case alinhar:{ //Ao assumir a posição correta, o robô executará uma rotação para que fique de frente para a bola.
             if(side ? ballPosition.x()>=0 : ballPosition.x()<=0){
-                if(getOrientation!=((3*PI/2) -(alinhamento.y()/alinhamento.x())) && getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
+                if(getOrientation!=((3*PI/2) -(alinhamento.y()/alinhamento.x())) && side ? getPosition.x() >= ajuste.x()-0.05 && getPosition.y() <= ajuste.y()+0.05 : getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
                     jogador->rotateTo((3*PI/2)-(alinhamento.y()/alinhamento.x()));
                     estadoChute=chutar;
                 }else{
                     estadoChute=aproximar;
                 }
             }else{
-                if(getOrientation!=(+(alinhamento.y()/alinhamento.x())) && getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
+                if(getOrientation!= side ? -((alinhamento.y()/alinhamento.x())) : ((alinhamento.y()/alinhamento.x())) && side ? getPosition.x() <= ajuste.x()-0.05 && getPosition.y() <= ajuste.y()+0.05 : getPosition.x() <= ajuste.x()+0.05 && getPosition.y() >= ajuste.y()-0.05){
                     jogador->rotateTo(+(alinhamento.y()/alinhamento.x()));
                     estadoChute=chutar;
                 }else{

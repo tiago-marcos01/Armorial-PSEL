@@ -65,7 +65,6 @@ WorldMap* Coach::getWorldMap() {
 void Coach::runCoach() {
 
     getWorldMap()->playingLeftSide();
-
     goleiro(getPlayer(YELLOW,0).value(), getWorldMap());
     atacante(getPlayer(YELLOW,1).value(), getWorldMap());    
     meioCampo(getPlayer(YELLOW,2).value(), getWorldMap());
